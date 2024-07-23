@@ -1,3 +1,5 @@
+import os
+import json
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -6,12 +8,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import os
+from email_authentication import get_confirmation_code
 
-def get_confirmation_code(email):
-    return "123456"  # Имплементация получения кода из почты
-
-def register_account(email, password, proxy):
+def register_account(email, password, proxy, email_password):
     chrome_options = Options()
     chrome_options.add_argument(f'--proxy-server=socks5://{proxy}')
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
@@ -26,7 +25,7 @@ def register_account(email, password, proxy):
         submit_email_button = driver.find_element(By.CSS_SELECTOR, "button.submit-email")
         submit_email_button.click()
 
-        confirmation_code = get_confirmation_code(email)
+        confirmation_code = get_confirmation_code(email, email_password)
 
         code_input = wait.until(EC.presence_of_element_located((By.NAME, "verificationCode")))
         code_input.send_keys(confirmation_code)
@@ -50,16 +49,16 @@ def register_account(email, password, proxy):
         driver.quit()
 
 def generate_password():
-    return "examplepassword"  # Или используйте генератор случайных паролей
+    # Генерация случайного пароля
+    return "examplepassword"
 
-def read_files():
+def read_files(emails_path, proxies_path):
     emails = []
     proxies = []
-    if os.path.exists("emails.txt"):
-        with open("emails.txt", "r") as email_file:
+    if emails_path and os.path.exists(emails_path):
+        with open(emails_path, "r") as email_file:
             emails = [line.strip() for line in email_file]
-    if os.path.exists("proxy.txt"):
-        with open("proxy.txt", "r") as proxy_file:
+    if proxies_path and os.path.exists(proxies_path):
+        with open(proxies_path, "r") as proxy_file:
             proxies = [line.strip() for line in proxy_file]
     return emails, proxies
-  
