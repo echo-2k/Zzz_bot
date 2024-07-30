@@ -1,9 +1,7 @@
 # Zzz_bot
 
-Обработчики команд:
-
-send_welcome(message) создает профиль при первом запуске и отправляет приветственное сообщение.
-show_profile(message) показывает профиль пользователя.
-upload_email(message) и upload_proxy(message) обрабатывают загрузку файлов.
-register_accounts(message) регистрирует аккаунты, используя данные из файлов пользователя.
-handle_file(message) обрабатывает загрузку файлов и обновляет данные пользователя.
+1. captcha - process
+2. avto register - process
+3. rambler mail - process
+4. avto login game - process
+5. avto farm - process
